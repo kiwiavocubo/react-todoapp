@@ -46,16 +46,16 @@ class App extends Component {
     }) 
     return (
       <div className="container">
-
-       <div className="header">REACT TODO APPLICATION</div>
+       <div className="header">React TODO Application</div>
        {notes}
        <div className="btn" onClick={this.addNote.bind(this)}>+</div>
        <input type="text" 
-          ref={((input) => {this.textInput=input})}
+            ref={((input) => {this.textInput=input})}
             className="textInput"
             value={ this.state.noteText}
             onChange={noteText=>this.updateNotetext(noteText)}
             onKeyPress={this.handleKeyPress.bind(this)}
+            placeholder="Enter Here..."
           />
         </div>
     );
