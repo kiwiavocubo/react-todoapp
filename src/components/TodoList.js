@@ -1,26 +1,31 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Todo from './Todo'
 
-const TodoList = ({ todos, toggleTodo }) => (
-  <ul>
-    {todos.map(todo =>
-      <Todo
-        key={todo.id}
-        {...todo}
-        onClick={() => toggleTodo(todo.id)}
-      />
-    )}
-  </ul>
-)
+import React from 'react';
+import InputForm from './InputForm';
+import TodoOutPut from './TodoOutput';
 
-TodoList.propTypes = {
-  todos: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    completed: PropTypes.bool.isRequired,
-    text: PropTypes.string.isRequired
-  }).isRequired).isRequired,
-  toggleTodo: PropTypes.func.isRequired
+class TodoList extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            todoArr:[]
+        }
+    }
+
+    handleChange(todo) {
+        var rows = this.state.todoArr;
+        rows.push(todo);
+
+        this.setState({
+            todoArr:rows
+        });
+    }
+    render (){
+        return (
+            <div>
+                <InputForm onAdd={this.handleChange.bind(this)}  />
+                <TodoOutPut todo={this.state.todoArr} />
+            </div>
+        );
+    }
 }
-
-export default TodoList
+export default TodoList;
