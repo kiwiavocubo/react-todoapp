@@ -1,46 +1,26 @@
-import React, {Component} from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
+import Todo from './Todo'
 
-class TodoList extends Component{
+const TodoList = ({ todos, toggleTodo }) => (
+  <ul>
+    {todos.map(todo =>
+      <Todo
+        key={todo.id}
+        {...todo}
+        onClick={() => toggleTodo(todo.id)}
+      />
+    )}
+  </ul>
+)
 
-    changeTab (e){
-        var type = e.target.getAttribute('type');
-        this.setState({type:type})
-    };
-    getInitialState() {
-        return {type:'all'};
-    };
-    
-    render(){
-        var style = {};
-        if(this.props.items.length === 0){
-            style = {display:'none'};
-        }
-
-        return (
-            <div className="itemList">
-            <div className="clearfix">
-                {this.props.items.length} items
-                <nav style={style}>
-                    <a className={this.state.type === 'all'?'navTab active':'navTab'} type='all' onClick={this.changeTab}>ALL</a>
-                    <a className={this.state.type === 'active'?'navTab active':'navTab'} type='active' onClick={this.changeTab}>ACTIVE</a>
-                    <a className={this.state.type === 'done'?'navTab active':'navTab'} type='done' onClick={this.changeTab}>COMPLETE</a>
-                </nav>
-            </div>
-            <ul>
-                {this.props.items.map((item, index) => {
-                        if(this.state.type === 'all'||this.state.type === item.status){
-                            return <li key={index} id={index} className={item.status}>
-                            <input type="checkbox" className="toggle" onChange={this.props.changeStatus} checked={item.status === 'done'}/>
-                            <lable>{item.text}</lable>
-                            <button className="remove" onClick={this.props.removeItem}></button>
-                        </li>;
-                        }
-                    })
-                }
-            </ul>
-        </div>
-        );
-            
-    }
+TodoList.propTypes = {
+  todos: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    completed: PropTypes.bool.isRequired,
+    text: PropTypes.string.isRequired
+  }).isRequired).isRequired,
+  toggleTodo: PropTypes.func.isRequired
 }
-export default TodoList;
+
+export default TodoList
