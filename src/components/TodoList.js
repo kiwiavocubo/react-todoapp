@@ -1,4 +1,3 @@
-
 import React from 'react';
 import InputForm from './InputForm';
 import TodoOutPut from './TodoOutput';
@@ -14,7 +13,6 @@ class TodoList extends React.Component{
     handleChange(todo) {
         var rows = this.state.todoArr;
         rows.push(todo);
-
         this.setState({
             todoArr:rows
         });

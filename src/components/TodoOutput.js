@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import ReactTable from "react-table";
-import 'react-table/react-table.css';
+import { Table,Icon,Popconfirm} from 'antd';
+
 
 class TodoOutput extends Component {
     constructor(props) {
@@ -9,25 +9,8 @@ class TodoOutput extends Component {
            data: []
         };
         this.refreshState();
-        this.renderEditable = this.renderEditable.bind(this);
     }
-    renderEditable(cellInfo) {
-        return (
-          <div
-            style={{ backgroundColor: "#fafafa" }}
-            contentEditable
-            suppressContentEditableWarning
-            onBlur={e => {
-              const data = [...this.state.data];
-              data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-              this.setState({ data });
-            }}
-            dangerouslySetInnerHTML={{
-              __html: this.state.data[cellInfo.index][cellInfo.column.id]
-            }}
-          />
-        );
-      }
+   
     getNowFormatDate() {
         var date = new Date();
         var dateSeperator = "-";
@@ -59,29 +42,43 @@ class TodoOutput extends Component {
         });
     }
 
+    onDelete(key){
+     const data = [...this.state.data];
+        this.setState({ data: data.filter(item => item.key !== key) });
+    }
     componentWillReceiveProps() {
         this.refreshState();
     }
 
   render() {
+      
+
     const columns = [{
-        Header: 'Date',
-        accessor: 'date',
+        title: 'Date',
+        dataIndex: 'date',
         key: 'date',
     }, {
-        Header: 'Your Todos',
-        accessor: 'todo',
-        id: 'todo',
-        Cell: this.renderEditable
+        title: 'Todos',
+        dataIndex: 'todo',
+        key: 'todo',
     }, {
-        Header: 'Manage',
+        title: 'Manage',
         key: 'action',
-        id:'manage',
+        render: (text, record) =>{ 
+            return(
+                this.state.data.length > 0 ?
+              (
+              <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
+              <a href="#"> <Icon type="delete"/></a>
+            </Popconfirm>
+              ) : null
+        );
+    },
     }];
     return (
-        <ReactTable columns={columns} data={this.state.data} />
+        <Table columns={columns} dataSource={this.state.data} />
     );
-  }
+}
 }
 
 export default TodoOutput;
