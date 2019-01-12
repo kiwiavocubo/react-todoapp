@@ -1,5 +1,5 @@
 import React  from 'react';
-import {Button,Input} from 'antd';
+import '../App.css';
 
 
 class InputForm extends React.Component{
@@ -40,21 +40,21 @@ class InputForm extends React.Component{
 
 
     render (){
-        const {inputText} = this.state;
+       
         return (
-            <div>
-                <Input
-                    id = 'txtBox'
+            <div className="input-group mb-3">
+                <input
+                    className='form-control'
                     placeholder="What's your agenda today?"
-                    value={inputText}
-                    //type="textarea"
-                    style={{ width: 500 }}
+                    value={this.state.inputText}
                     onKeyPress={this.addTodo.bind(this)}
                     onChange={this.changeInputVal.bind(this)}
                     ref={((input) => {this.textInput= input})}
                 />
-                <Button type="default" onClick={this.addTodoForBut.bind(this)}>Add</Button>
-            </div>
+                 <div class="input-group-append">
+                <button className='btn btn-outline-secondary' onClick={this.addTodoForBut.bind(this)}> Add </button>
+            
+                </div></div>
         );
     }
 }
